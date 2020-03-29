@@ -1,0 +1,9 @@
+Episode 100     Average Score: 0.242
+Episode 200     Average Score: 2.13
+Episode 300     Average Score: 5.73
+Episode 400     Average Score: 9.67
+Episode 500     Average Score: 12.25
+Episode 522     Average Score: 13.01
+Environment solved in 422 episodes!     Average Score: 13.01
+
+Total Training time = 41.1 min
