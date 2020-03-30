@@ -10,7 +10,10 @@
 ### Introduction
 
 In this project we will train an RL agent using [DQN](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html) algorithm to collect yellow bananas in the Unity Banana environment. The project is implemented using PyTorch.
+
 ![Trained Agent][image1]
+
+
 
 ## Environment/Action Description:
 
@@ -28,8 +31,8 @@ For more details on the environment see the following page:
     **Note:** make sure `AHF_Banana.py` has access to `Banana.exe` (they are in the same folder).
 2. It is highly recommended to create a conda virtual environment and install the dependencies and requirements there:
 ```bash
-	conda create --name DRL python=3.6 
-	activate DRL
+conda create --name DRL python=3.6 
+activate DRL
 ```
 3. Clone the repository, and navigate to the `python/` folder.  Then, install several dependencies.
 ```bash
@@ -77,4 +80,6 @@ As mentioned above the environment is considered solved when the agent achieves 
 Here is a plot of the Score vs Episodes of training
 
 ![Training Results](./training.png)
+
+
 
