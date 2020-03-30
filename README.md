@@ -1,55 +1,80 @@
-[//]: # (Image References)
+
+
+
+[//]: # "Image References"
 
 [image1]: https://user-images.githubusercontent.com/10624937/42135619-d90f2f28-7d12-11e8-8823-82b970a54d7e.gif "Trained Agent"
 
-# Project 1: Navigation
+# ML Unity Banana Collector
 
 ### Introduction
 
-For this project, you will train an agent to navigate (and collect bananas!) in a large, square world.  
-
+In this project we will train an RL agent using [DQN](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html) algorithm to collect yellow bananas in the Unity Banana environment. The project is implemented using PyTorch.
 ![Trained Agent][image1]
 
-A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana.  Thus, the goal of your agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
+## Environment/Action Description:
 
-The state space has 37 dimensions and contains the agent's velocity, along with ray-based perception of objects around agent's forward direction.  Given this information, the agent has to learn how to best select actions.  Four discrete actions are available, corresponding to:
-- **`0`** - move forward.
-- **`1`** - move backward.
-- **`2`** - turn left.
-- **`3`** - turn right.
+ - Collect yellow banana: +1 reward
+ - Collect blue banana: -1 reward
+ - Actions: move forward, move backward, turn left, turn right
+ - State space dimension (observation): 37 states including agents velocity, etc
 
-The task is episodic, and in order to solve the environment, your agent must get an average score of +13 over 100 consecutive episodes.
+To solve the environment, the agent must get an average score of +13 over 100 consecutive episodes (this can be modified in the code).
+For more details on the environment see the following page:
+[Udacity DeepRL nano degree/Navigation project](https://github.com/udacity/deep-reinforcement-learning/tree/master/p1_navigation)
 
-### Getting Started
+## Requirements and Dependencies
+1. The Unity bananas environment for Windows (64-bit) is included in this repo. For other OS please see the following link: [Unity Banana Environment Dowlnoad](https://github.com/udacity/deep-reinforcement-learning/tree/master/p1_navigation#getting-started)
+    **Note:** make sure `AHF_Banana.py` has access to `Banana.exe` (they are in the same folder).
+2. It is highly recommended to create a conda virtual environment and install the dependencies and requirements there:
+```bash
+	conda create --name DRL python=3.6 
+	activate DRL
+```
+3. Clone the repository, and navigate to the `python/` folder.  Then, install several dependencies.
+```bash
+git clone https://github.com/udacity/deep-reinforcement-learning.git
+cd deep-reinforcement-learning/python
+pip install .
+```
+**Note:** if you face issues installing PyTorch using the above method, you can remove `torch==0.4.0` from the `python/requirements.txt` file and instal PyTorch using conda using `conda install pytorch=0.4.0 -c pytorch` ([more details](https://github.com/udacity/deep-reinforcement-learning/issues/13#issuecomment-475455429)).
 
-1. Download the environment from one of the links below.  You need only select the environment that matches your operating system:
-    - Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux.zip)
-    - Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana.app.zip)
-    - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86.zip)
-    - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Windows_x86_64.zip)
-    
-    (_For Windows users_) Check out [this link](https://support.microsoft.com/en-us/help/827218/how-to-determine-whether-a-computer-is-running-a-32-bit-version-or-64) if you need help with determining if your computer is running a 32-bit version or 64-bit version of the Windows operating system.
+## Instructions
 
-    (_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux_NoVis.zip) to obtain the environment.
+The main file is `AHF_Banana.py` that initializes the Unity banana environment, opens the DQN agent and starts training using given parameters. To train the agents just run `AHF_Banana.py` with the conda virtual env activated.
+The DQN agent is defined in `AHF_DQN.py` where you can modify batch-size, learning rate, etc.
+The NN model is defined in `AHF_model.py` where you can modify number of hidden layers, units, activation functions, etc.
 
-2. Place the file in the DRLND GitHub repository, in the `p1_navigation/` folder, and unzip (or decompress) the file. 
 
-### Instructions
 
-Follow the instructions in `Navigation.ipynb` to get started with training your own agent!  
+### Summary of the Q-network
+The layers of the Q-network used in the DQN agent is shown here. You can modify the number of layers, hidden units, activation functions, dropout layers, etc to see the change in the performance. 
 
-### (Optional) Challenge: Learning from Pixels
+```
+  (fc1): Linear(in_features=37, out_features=1024, bias=True)
+  (fc2): Linear(in_features=1024, out_features=512, bias=True)
+  (fc3): Linear(in_features=512, out_features=256, bias=True)
+  (fc4): Linear(in_features=256, out_features=4, bias=True)
+```
+Note that the number of `in-features` of the 1st layer should be equal to the state-space dimension of the environment which is 37. Moreover, the `out_features` of the last layer should be equal to the action-space dimension which is 4.
 
-After you have successfully completed the project, if you're looking for an additional challenge, you have come to the right place!  In the project, your agent learned from information such as its velocity, along with ray-based perception of objects around its forward direction.  A more challenging task would be to learn directly from pixels!
 
-To solve this harder task, you'll need to download a new Unity environment.  This environment is almost identical to the project environment, where the only difference is that the state is an 84 x 84 RGB image, corresponding to the agent's first-person view.  (**Note**: Udacity students should not submit a project with this new environment.)
+## Results
+Running `AHF_Banana.py` on cpu I got the following results:
+```
+Episode 100     Average Score: 0.242
+Episode 200     Average Score: 2.13
+Episode 300     Average Score: 5.73
+Episode 400     Average Score: 9.67
+Episode 500     Average Score: 12.25
+Episode 522     Average Score: 13.01
+Environment solved in 422 episodes!     Average Score: 13.01
 
-You need only select the environment that matches your operating system:
-- Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/VisualBanana_Linux.zip)
-- Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/VisualBanana.app.zip)
-- Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/VisualBanana_Windows_x86.zip)
-- Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/VisualBanana_Windows_x86_64.zip)
+Total Training time = 41.1 min
+```
+As mentioned above the environment is considered solved when the agent achieves Average Score >= 13.01 in 100 consecutive Episodes.
 
-Then, place the file in the `p1_navigation/` folder in the DRLND GitHub repository, and unzip (or decompress) the file.  Next, open `Navigation_Pixels.ipynb` and follow the instructions to learn how to use the Python API to control the agent.
+Here is a plot of the Score vs Episodes of training
 
-(_For AWS_) If you'd like to train the agent on AWS, you must follow the instructions to [set up X Server](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above.
+![Training Results](./training.png)
+
